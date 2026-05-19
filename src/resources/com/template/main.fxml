@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.template.MainController"
+            prefWidth="1200"
+            prefHeight="700"
+            stylesheets="@style.css">
+
+        <!-- TOPO -->
+        <top>
+
+                <HBox spacing="10"
+                      style="-fx-background-color: #0F172A;">
+
+                        <padding>
+                                <Insets top="15" right="20" bottom="15" left="20"/>
+                        </padding>
+
+                        <Label text="CRUD Países"
+                               style="-fx-text-fill: white;
+                          -fx-font-size: 24px;
+                          -fx-font-weight: bold;"/>
+
+                </HBox>
+
+        </top>
+
+        <!-- CONTEÚDO -->
+        <center>
+
+                <HBox spacing="20">
+
+                        <padding>
+                                <Insets top="20" right="20" bottom="20" left="20"/>
+                        </padding>
+
+                        <!-- FORM -->
+                        <VBox spacing="12"
+                              prefWidth="320"
+                              styleClass="card">
+
+                                <Label text="Cadastro"
+                                       styleClass="titulo-card"/>
+
+                                <TextField fx:id="txtNome"
+                                           promptText="Nome"/>
+
+                                <TextField fx:id="txtSigla"
+                                           promptText="Sigla"/>
+
+                                <TextField fx:id="txtCapital"
+                                           promptText="Capital"/>
+
+                                <TextField fx:id="txtArea"
+                                           promptText="Área km²"/>
+
+                                <TextField fx:id="txtPib"
+                                           promptText="PIB PPC"/>
+
+                                <TextField fx:id="txtPopulacao"
+                                           promptText="População"/>
+
+                                <TextField fx:id="txtMilitar"
+                                           promptText="Índice Militar"/>
+
+                                <Separator/>
+
+                                <Button text="Salvar"
+                                        onAction="#salvar"
+                                        styleClass="btn-salvar"
+                                        maxWidth="Infinity"/>
+
+                                <Button text="Atualizar"
+                                        onAction="#atualizar"
+                                        styleClass="btn-atualizar"
+                                        maxWidth="Infinity"/>
+
+                                <Button text="Excluir"
+                                        onAction="#excluir"
+                                        styleClass="btn-excluir"
+                                        maxWidth="Infinity"/>
+
+                                <Button text="Limpar"
+                                        onAction="#limpar"
+                                        styleClass="btn-limpar"
+                                        maxWidth="Infinity"/>
+
+                        </VBox>
+
+                        <!-- TABELA -->
+                        <VBox spacing="15"
+                              VBox.vgrow="ALWAYS"
+                              HBox.hgrow="ALWAYS"
+                              styleClass="card">
+
+                                <Label text="Países cadastrados"
+                                       styleClass="titulo-card"/>
+
+                                <TableView fx:id="tablePaises"
+                                           VBox.vgrow="ALWAYS"
+                                           onMouseClicked="#selecionarPais">
+
+                                        <columns>
+
+                                                <TableColumn fx:id="colId"
+                                                             text="ID"
+                                                             prefWidth="60"/>
+
+                                                <TableColumn fx:id="colNome"
+                                                             text="Nome"
+                                                             prefWidth="180"/>
+
+                                                <TableColumn fx:id="colSigla"
+                                                             text="Sigla"
+                                                             prefWidth="80"/>
+
+                                                <TableColumn fx:id="colCapital"
+                                                             text="Capital"
+                                                             prefWidth="150"/>
+
+                                                <TableColumn fx:id="colArea"
+                                                             text="Área"
+                                                             prefWidth="120"/>
+
+                                                <TableColumn fx:id="colPib"
+                                                             text="PIB"
+                                                             prefWidth="120"/>
+
+                                                <TableColumn fx:id="colPopulacao"
+                                                             text="População"
+                                                             prefWidth="140"/>
+
+                                                <TableColumn fx:id="colMilitar"
+                                                             text="Militar"
+                                                             prefWidth="120"/>
+
+                                        </columns>
+
+                                </TableView>
+
+                        </VBox>
+
+                </HBox>
+
+        </center>
+
+</BorderPane>

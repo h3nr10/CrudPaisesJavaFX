@@ -1,0 +1,63 @@
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #F1F5F9;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 20;
+
+    -fx-effect: dropshadow(
+            gaussian,
+            rgba(0,0,0,0.08),
+            10,
+            0,
+            0,
+            2
+    );
+}
+
+.titulo-card {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.text-field {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #CBD5E1;
+    -fx-padding: 10;
+}
+
+.button {
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 12;
+    -fx-text-fill: white;
+}
+
+.btn-salvar {
+    -fx-background-color: #22C55E;
+}
+
+.btn-atualizar {
+    -fx-background-color: #3B82F6;
+}
+
+.btn-excluir {
+    -fx-background-color: #EF4444;
+}
+
+.btn-limpar {
+    -fx-background-color: #64748B;
+}
+
+.table-view {
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #E2E8F0;
+}
