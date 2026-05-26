@@ -7,146 +7,88 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.template.MainController"
-            prefWidth="1200"
-            prefHeight="700"
+            prefWidth="1300"
+            prefHeight="750"
             stylesheets="@style.css">
 
-        <!-- TOPO -->
         <top>
-
-                <HBox spacing="10"
-                      style="-fx-background-color: #0F172A;">
-
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header-bar">
                         <padding>
-                                <Insets top="15" right="20" bottom="15" left="20"/>
+                                <Insets top="15" right="25" bottom="15" left="25"/>
                         </padding>
-
-                        <Label text="CRUD Países"
-                               style="-fx-text-fill: white;
-                          -fx-font-size: 24px;
-                          -fx-font-weight: bold;"/>
-
+                        <Label text="CRUD Países" styleClass="header-title"/>
                 </HBox>
-
         </top>
 
-        <!-- CONTEÚDO -->
         <center>
-
-                <HBox spacing="20">
-
+                <HBox spacing="25">
                         <padding>
-                                <Insets top="20" right="20" bottom="20" left="20"/>
+                                <Insets top="25" right="25" bottom="25" left="25"/>
                         </padding>
 
-                        <!-- FORM -->
-                        <VBox spacing="12"
-                              prefWidth="320"
-                              styleClass="card">
+                        <VBox spacing="20" prefWidth="380" styleClass="card">
 
-                                <Label text="Cadastro"
-                                       styleClass="titulo-card"/>
+                                <Label text="Detalhes do País" styleClass="titulo-card"/>
 
-                                <TextField fx:id="txtNome"
-                                           promptText="Nome"/>
+                                <GridPane hgap="15" vgap="15">
+                                        <columnConstraints>
+                                                <ColumnConstraints halignment="RIGHT" minWidth="90"/>
+                                                <ColumnConstraints hgrow="ALWAYS"/>
+                                        </columnConstraints>
 
-                                <TextField fx:id="txtSigla"
-                                           promptText="Sigla"/>
+                                        <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+                                        <TextField fx:id="txtNome" GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Ex: Brasil"/>
 
-                                <TextField fx:id="txtCapital"
-                                           promptText="Capital"/>
+                                        <Label text="Sigla:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+                                        <TextField fx:id="txtSigla" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Ex: BR"/>
 
-                                <TextField fx:id="txtArea"
-                                           promptText="Área km²"/>
+                                        <Label text="Capital:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
+                                        <TextField fx:id="txtCapital" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Ex: Brasília"/>
 
-                                <TextField fx:id="txtPib"
-                                           promptText="PIB PPC"/>
+                                        <Label text="Área (km²):" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
+                                        <TextField fx:id="txtArea" GridPane.rowIndex="3" GridPane.columnIndex="1" promptText="Ex: 8515767"/>
 
-                                <TextField fx:id="txtPopulacao"
-                                           promptText="População"/>
+                                        <Label text="PIB (Bilhão):" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="form-label"/>
+                                        <TextField fx:id="txtPib" GridPane.rowIndex="4" GridPane.columnIndex="1" promptText="Ex: 3770.0"/>
 
-                                <TextField fx:id="txtMilitar"
-                                           promptText="Índice Militar"/>
+                                        <Label text="População:" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="form-label"/>
+                                        <TextField fx:id="txtPopulacao" GridPane.rowIndex="5" GridPane.columnIndex="1" promptText="Ex: 214000000"/>
 
-                                <Separator/>
+                                        <Label text="Poder Militar:" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="form-label"/>
+                                        <TextField fx:id="txtMilitar" GridPane.rowIndex="6" GridPane.columnIndex="1" promptText="Ex: 0.2151"/>
+                                </GridPane>
 
-                                <Button text="Salvar"
-                                        onAction="#salvar"
-                                        styleClass="btn-salvar"
-                                        maxWidth="Infinity"/>
-
-                                <Button text="Atualizar"
-                                        onAction="#atualizar"
-                                        styleClass="btn-atualizar"
-                                        maxWidth="Infinity"/>
-
-                                <Button text="Excluir"
-                                        onAction="#excluir"
-                                        styleClass="btn-excluir"
-                                        maxWidth="Infinity"/>
-
-                                <Button text="Limpar"
-                                        onAction="#limpar"
-                                        styleClass="btn-limpar"
-                                        maxWidth="Infinity"/>
-
+                                <Region VBox.vgrow="ALWAYS"/> <VBox spacing="10">
+                                <HBox spacing="10">
+                                        <Button text="Salvar" onAction="#salvar" styleClass="btn, btn-salvar" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                        <Button text="Atualizar" onAction="#atualizar" styleClass="btn, btn-atualizar" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                </HBox>
+                                <HBox spacing="10">
+                                        <Button text="Excluir" onAction="#excluir" styleClass="btn, btn-excluir" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                        <Button text="Limpar" onAction="#limpar" styleClass="btn, btn-limpar" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                </HBox>
+                        </VBox>
                         </VBox>
 
-                        <!-- TABELA -->
-                        <VBox spacing="15"
-                              VBox.vgrow="ALWAYS"
-                              HBox.hgrow="ALWAYS"
-                              styleClass="card">
+                        <VBox spacing="15" HBox.hgrow="ALWAYS" styleClass="card">
+                                <Label text="Registos Existentes" styleClass="titulo-card"/>
 
-                                <Label text="Países cadastrados"
-                                       styleClass="titulo-card"/>
-
-                                <TableView fx:id="tablePaises"
-                                           VBox.vgrow="ALWAYS"
-                                           onMouseClicked="#selecionarPais">
-
+                                <TableView fx:id="tablePaises" VBox.vgrow="ALWAYS" onMouseClicked="#selecionarPais">
+                                        <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                        </columnResizePolicy>
                                         <columns>
-
-                                                <TableColumn fx:id="colId"
-                                                             text="ID"
-                                                             prefWidth="60"/>
-
-                                                <TableColumn fx:id="colNome"
-                                                             text="Nome"
-                                                             prefWidth="180"/>
-
-                                                <TableColumn fx:id="colSigla"
-                                                             text="Sigla"
-                                                             prefWidth="80"/>
-
-                                                <TableColumn fx:id="colCapital"
-                                                             text="Capital"
-                                                             prefWidth="150"/>
-
-                                                <TableColumn fx:id="colArea"
-                                                             text="Área"
-                                                             prefWidth="120"/>
-
-                                                <TableColumn fx:id="colPib"
-                                                             text="PIB"
-                                                             prefWidth="120"/>
-
-                                                <TableColumn fx:id="colPopulacao"
-                                                             text="População"
-                                                             prefWidth="140"/>
-
-                                                <TableColumn fx:id="colMilitar"
-                                                             text="Militar"
-                                                             prefWidth="120"/>
-
+                                                <TableColumn fx:id="colId" text="ID" maxWidth="40"/>
+                                                <TableColumn fx:id="colNome" text="País" minWidth="120"/>
+                                                <TableColumn fx:id="colSigla" text="Sigla" maxWidth="60"/>
+                                                <TableColumn fx:id="colCapital" text="Capital" minWidth="120"/>
+                                                <TableColumn fx:id="colArea" text="Área" minWidth="120" style="-fx-alignment: CENTER-RIGHT;"/>
+                                                <TableColumn fx:id="colPib" text="PIB (PPC)" minWidth="130" style="-fx-alignment: CENTER-RIGHT; -fx-font-weight: bold;"/>
+                                                <TableColumn fx:id="colPopulacao" text="População" minWidth="100" style="-fx-alignment: CENTER-RIGHT;"/>
+                                                <TableColumn fx:id="colMilitar" text="Índice Militar" minWidth="100" style="-fx-alignment: CENTER;"/>
                                         </columns>
-
                                 </TableView>
-
                         </VBox>
-
                 </HBox>
-
         </center>
-
 </BorderPane>

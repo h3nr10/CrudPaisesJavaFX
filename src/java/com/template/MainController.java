@@ -8,7 +8,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
-import java.sql.*;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -21,263 +20,101 @@ public class MainController implements Initializable {
     @FXML private TextField txtPopulacao;
     @FXML private TextField txtMilitar;
 
-    @FXML private TableView<Pais> tablePaises;
+    @FXML private TableView<PaisDTO> tablePaises;
+    @FXML private TableColumn<PaisDTO, Long> colId;
+    @FXML private TableColumn<PaisDTO, String> colNome;
+    @FXML private TableColumn<PaisDTO, String> colSigla;
+    @FXML private TableColumn<PaisDTO, String> colCapital;
+    @FXML private TableColumn<PaisDTO, String> colArea;
+    @FXML private TableColumn<PaisDTO, String> colPib;
+    @FXML private TableColumn<PaisDTO, String> colPopulacao;
+    @FXML private TableColumn<PaisDTO, String> colMilitar;
 
-    @FXML private TableColumn<Pais, Long> colId;
-    @FXML private TableColumn<Pais, String> colNome;
-    @FXML private TableColumn<Pais, String> colSigla;
-    @FXML private TableColumn<Pais, String> colCapital;
-    @FXML private TableColumn<Pais, Double> colArea;
-    @FXML private TableColumn<Pais, Double> colPib;
-    @FXML private TableColumn<Pais, Integer> colPopulacao;
-    @FXML private TableColumn<Pais, Double> colMilitar;
-
-    private final ObservableList<Pais> lista =
-            FXCollections.observableArrayList();
-
-    private final Conexao conexao = new Conexao();
-
+    private final ObservableList<PaisDTO> lista = FXCollections.observableArrayList();
+    private final PaisDAO paisDAO = new PaisDAO();
     private Long idSelecionado = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        colId.setCellValueFactory(
-                new PropertyValueFactory<>("id"));
-
-        colNome.setCellValueFactory(
-                new PropertyValueFactory<>("nome"));
-
-        colSigla.setCellValueFactory(
-                new PropertyValueFactory<>("sigla"));
-
-        colCapital.setCellValueFactory(
-                new PropertyValueFactory<>("capital"));
-
-        colArea.setCellValueFactory(
-                new PropertyValueFactory<>("area"));
-
-        colPib.setCellValueFactory(
-                new PropertyValueFactory<>("pib"));
-
-        colPopulacao.setCellValueFactory(
-                new PropertyValueFactory<>("populacao"));
-
-        colMilitar.setCellValueFactory(
-                new PropertyValueFactory<>("militar"));
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colSigla.setCellValueFactory(new PropertyValueFactory<>("sigla"));
+        colCapital.setCellValueFactory(new PropertyValueFactory<>("capital"));
+        colArea.setCellValueFactory(new PropertyValueFactory<>("areaFormatada"));
+        colPib.setCellValueFactory(new PropertyValueFactory<>("pibFormatado"));
+        colPopulacao.setCellValueFactory(new PropertyValueFactory<>("populacaoFormatada"));
+        colMilitar.setCellValueFactory(new PropertyValueFactory<>("militarFormatado"));
 
         listar();
     }
 
     @FXML
     public void salvar() {
-
-        String sql = """
-            INSERT INTO paises
-            (nome, sigla, capital,
-             area_km2, pib_ppc_bilhoes,
-             populacao, indice_poder_militar)
-
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """;
-
-        try (
-                Connection conn = conexao.conectar();
-                PreparedStatement stmt =
-                        conn.prepareStatement(sql)
-        ) {
-
-            stmt.setString(1, txtNome.getText());
-            stmt.setString(2, txtSigla.getText());
-            stmt.setString(3, txtCapital.getText());
-
-            stmt.setDouble(4,
-                    Double.parseDouble(txtArea.getText()));
-
-            stmt.setDouble(5,
-                    Double.parseDouble(txtPib.getText()));
-
-            stmt.setInt(6,
-                    Integer.parseInt(txtPopulacao.getText()));
-
-            stmt.setDouble(7,
-                    Double.parseDouble(txtMilitar.getText()));
-
-            stmt.execute();
-
-            listar();
-
-            limpar();
-
+        try {
+            paisDAO.salvar(extrairDadosFormulario());
+            atualizarTela();
         } catch (Exception e) {
-
-            alerta(e.getMessage());
+            alerta(e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     @FXML
     public void atualizar() {
-
         if (idSelecionado == null) {
-            alerta("Selecione um país");
+            alerta("Selecione um país na tabela para atualizar.", Alert.AlertType.WARNING);
             return;
         }
-
-        String sql = """
-            UPDATE paises
-            SET nome=?,
-                sigla=?,
-                capital=?,
-                area_km2=?,
-                pib_ppc_bilhoes=?,
-                populacao=?,
-                indice_poder_militar=?
-            WHERE id=?
-        """;
-
-        try (
-                Connection conn = conexao.conectar();
-                PreparedStatement stmt =
-                        conn.prepareStatement(sql)
-        ) {
-
-            stmt.setString(1, txtNome.getText());
-            stmt.setString(2, txtSigla.getText());
-            stmt.setString(3, txtCapital.getText());
-
-            stmt.setDouble(4,
-                    Double.parseDouble(txtArea.getText()));
-
-            stmt.setDouble(5,
-                    Double.parseDouble(txtPib.getText()));
-
-            stmt.setInt(6,
-                    Integer.parseInt(txtPopulacao.getText()));
-
-            stmt.setDouble(7,
-                    Double.parseDouble(txtMilitar.getText()));
-
-            stmt.setLong(8, idSelecionado);
-
-            stmt.execute();
-
-            listar();
-
-            limpar();
-
+        try {
+            PaisDTO pais = extrairDadosFormulario();
+            pais.setId(idSelecionado);
+            paisDAO.atualizar(pais);
+            atualizarTela();
         } catch (Exception e) {
-
-            alerta(e.getMessage());
+            alerta(e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     @FXML
     public void excluir() {
-
         if (idSelecionado == null) {
-            alerta("Selecione um país");
+            alerta("Selecione um país na tabela para excluir.", Alert.AlertType.WARNING);
             return;
         }
-
-        String sql =
-                "DELETE FROM paises WHERE id=?";
-
-        try (
-                Connection conn = conexao.conectar();
-                PreparedStatement stmt =
-                        conn.prepareStatement(sql)
-        ) {
-
-            stmt.setLong(1, idSelecionado);
-
-            stmt.execute();
-
-            listar();
-
-            limpar();
-
+        try {
+            paisDAO.excluir(idSelecionado);
+            atualizarTela();
         } catch (Exception e) {
-
-            alerta(e.getMessage());
+            alerta(e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     public void listar() {
-
-        lista.clear();
-
-        String sql = "SELECT * FROM paises";
-
-        try (
-                Connection conn = conexao.conectar();
-                PreparedStatement stmt =
-                        conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()
-        ) {
-
-            while (rs.next()) {
-
-                Pais p = new Pais();
-
-                p.setId(rs.getLong("id"));
-                p.setNome(rs.getString("nome"));
-                p.setSigla(rs.getString("sigla"));
-                p.setCapital(rs.getString("capital"));
-                p.setArea(rs.getDouble("area_km2"));
-                p.setPib(rs.getDouble("pib_ppc_bilhoes"));
-                p.setPopulacao(rs.getInt("populacao"));
-
-                p.setMilitar(
-                        rs.getDouble(
-                                "indice_poder_militar"
-                        )
-                );
-
-                lista.add(p);
-            }
-
+        try {
+            lista.setAll(paisDAO.listar());
             tablePaises.setItems(lista);
-
         } catch (Exception e) {
-
-            alerta(e.getMessage());
+            alerta("Erro ao listar: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
     @FXML
     public void selecionarPais() {
-
-        Pais p = tablePaises
-                .getSelectionModel()
-                .getSelectedItem();
+        PaisDTO p = tablePaises.getSelectionModel().getSelectedItem();
 
         if (p != null) {
-
             idSelecionado = p.getId();
-
             txtNome.setText(p.getNome());
             txtSigla.setText(p.getSigla());
             txtCapital.setText(p.getCapital());
-
-            txtArea.setText(
-                    String.valueOf(p.getArea()));
-
-            txtPib.setText(
-                    String.valueOf(p.getPib()));
-
-            txtPopulacao.setText(
-                    String.valueOf(
-                            p.getPopulacao()));
-
-            txtMilitar.setText(
-                    String.valueOf(
-                            p.getMilitar()));
+            txtArea.setText(String.valueOf(p.getArea()));
+            txtPib.setText(String.valueOf(p.getPib()));
+            txtPopulacao.setText(String.valueOf(p.getPopulacao()));
+            txtMilitar.setText(String.valueOf(p.getMilitar()));
         }
     }
 
     @FXML
     public void limpar() {
-
         txtNome.clear();
         txtSigla.clear();
         txtCapital.clear();
@@ -285,18 +122,39 @@ public class MainController implements Initializable {
         txtPib.clear();
         txtPopulacao.clear();
         txtMilitar.clear();
-
         idSelecionado = null;
+        tablePaises.getSelectionModel().clearSelection();
     }
 
-    public void alerta(String msg) {
+    private PaisDTO extrairDadosFormulario() {
+        if (txtNome.getText().isBlank() || txtSigla.getText().isBlank()) {
+            throw new IllegalArgumentException("Os campos Nome e Sigla são obrigatórios!");
+        }
 
-        Alert alert = new Alert(
-                Alert.AlertType.INFORMATION
-        );
+        try {
+            PaisDTO p = new PaisDTO();
+            p.setNome(txtNome.getText().trim());
+            p.setSigla(txtSigla.getText().trim());
+            p.setCapital(txtCapital.getText().trim());
+            p.setArea(Double.parseDouble(txtArea.getText().trim()));
+            p.setPib(Double.parseDouble(txtPib.getText().trim()));
+            p.setPopulacao(Integer.parseInt(txtPopulacao.getText().trim()));
+            p.setMilitar(Double.parseDouble(txtMilitar.getText().trim()));
+            return p;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Verifique os campos numéricos. Use apenas números e '.' para decimais.");
+        }
+    }
 
+    private void atualizarTela() {
+        listar();
+        limpar();
+    }
+
+    private void alerta(String msg, Alert.AlertType tipo) {
+        Alert alert = new Alert(tipo);
+        alert.setHeaderText(null);
         alert.setContentText(msg);
-
         alert.show();
     }
 }

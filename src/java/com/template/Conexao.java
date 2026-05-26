@@ -6,28 +6,15 @@ import java.sql.SQLException;
 
 public class Conexao {
 
-    private static final String URL =
-            "jdbc:postgresql://localhost:5432/Paises";
-
+    private static final String URL = "jdbc:postgresql://localhost:5432/Paises";
     private static final String USUARIO = "postgres";
-
     private static final String SENHA = "postgres";
 
     public Connection conectar() {
-
         try {
-
-            return DriverManager.getConnection(
-                    URL,
-                    USUARIO,
-                    SENHA
-            );
-
+            return DriverManager.getConnection(URL, USUARIO, SENHA);
         } catch (SQLException e) {
-
-            throw new RuntimeException(
-                    "Erro ao conectar: " + e.getMessage()
-            );
+            throw new RuntimeException("Erro ao conectar: " + e.getMessage());
         }
     }
 }
