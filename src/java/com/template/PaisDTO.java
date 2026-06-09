@@ -14,13 +14,11 @@ public class PaisDTO {
     private Integer populacao;
     private Double militar;
 
-    // Propriedades formatadas para exibição na TableView
     private final String areaFormatada;
     private final String pibFormatado;
     private final String populacaoFormatada;
     private final String militarFormatado;
 
-    // Construtor completo: Usado pelo DAO para montar os objetos vindos do banco de dados
     public PaisDTO(Long id, String nome, String sigla, String capital, Double area, Double pib, Integer populacao, Double militar) {
         this.id = id;
         this.nome = nome;
@@ -40,7 +38,6 @@ public class PaisDTO {
         this.militarFormatado = militar != null ? String.format(ptBR, "%.4f", militar) : "";
     }
 
-    // Construtor vazio: Usado pelo Controller para capturar os dados novos do formulário
     public PaisDTO() {
         this.areaFormatada = "";
         this.pibFormatado = "";
@@ -48,7 +45,6 @@ public class PaisDTO {
         this.militarFormatado = "";
     }
 
-    // Getters e Setters dos valores puros (Formulário e Banco)
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -73,7 +69,6 @@ public class PaisDTO {
     public Double getMilitar() { return militar; }
     public void setMilitar(Double militar) { this.militar = militar; }
 
-    // Getters das propriedades formatadas (lidos automaticamente pelas colunas da TableView)
     public String getAreaFormatada() { return areaFormatada; }
     public String getPibFormatado() { return pibFormatado; }
     public String getPopulacaoFormatada() { return populacaoFormatada; }
