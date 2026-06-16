@@ -58,16 +58,17 @@
                                         <TextField fx:id="txtMilitar" GridPane.rowIndex="6" GridPane.columnIndex="1" promptText="Ex: 0.2151"/>
                                 </GridPane>
 
-                                <Region VBox.vgrow="ALWAYS"/> <VBox spacing="10">
-                                <HBox spacing="10">
-                                        <Button text="Salvar" onAction="#salvar" styleClass="btn, btn-salvar" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                                        <Button text="Atualizar" onAction="#atualizar" styleClass="btn, btn-atualizar" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                                </HBox>
-                                <HBox spacing="10">
-                                        <Button text="Excluir" onAction="#excluir" styleClass="btn, btn-excluir" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                                        <Button text="Limpar" onAction="#limpar" styleClass="btn, btn-limpar" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                                </HBox>
-                        </VBox>
+                                <Region VBox.vgrow="ALWAYS"/>
+                                <VBox spacing="10">
+                                        <HBox spacing="10">
+                                                <Button text="Salvar" onAction="#salvar" styleClass="btn, btn-salvar" HBox.hgrow="ALWAYS" minWidth="150" maxWidth="150"/>
+                                                <Button fx:id="btnAtualizar" text="Atualizar" onAction="#atualizar" styleClass="btn, btn-atualizar" HBox.hgrow="ALWAYS" minWidth="150" maxWidth="150"/>
+                                        </HBox>
+                                        <HBox spacing="10">
+                                                <Button fx:id="btnExcluir" text="Excluir" onAction="#excluir" styleClass="btn, btn-excluir" HBox.hgrow="ALWAYS" minWidth="150" maxWidth="150"/>
+                                                <Button text="Limpar" onAction="#limpar" styleClass="btn, btn-limpar" HBox.hgrow="ALWAYS" minWidth="150" maxWidth="150"/>
+                                        </HBox>
+                                </VBox>
                         </VBox>
 
                         <VBox spacing="15" HBox.hgrow="ALWAYS" styleClass="card">

@@ -20,6 +20,9 @@ public class MainController implements Initializable {
     @FXML private TextField txtPopulacao;
     @FXML private TextField txtMilitar;
 
+    @FXML private Button btnAtualizar;
+    @FXML private Button btnExcluir;
+
     @FXML private TableView<PaisDTO> tablePaises;
     @FXML private TableColumn<PaisDTO, Long> colId;
     @FXML private TableColumn<PaisDTO, String> colNome;
@@ -46,6 +49,9 @@ public class MainController implements Initializable {
         colMilitar.setCellValueFactory(new PropertyValueFactory<>("militarFormatado"));
 
         listar();
+
+        btnAtualizar.setDisable(true);
+        btnExcluir.setDisable(true);
     }
 
     @FXML
@@ -110,6 +116,9 @@ public class MainController implements Initializable {
             txtPib.setText(String.valueOf(p.getPib()));
             txtPopulacao.setText(String.valueOf(p.getPopulacao()));
             txtMilitar.setText(String.valueOf(p.getMilitar()));
+
+            btnAtualizar.setDisable(false);
+            btnExcluir.setDisable(false);
         }
     }
 
@@ -124,6 +133,9 @@ public class MainController implements Initializable {
         txtMilitar.clear();
         idSelecionado = null;
         tablePaises.getSelectionModel().clearSelection();
+
+        btnAtualizar.setDisable(true);
+        btnExcluir.setDisable(true);
     }
 
     private PaisDTO extrairDadosFormulario() {

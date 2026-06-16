@@ -59,6 +59,11 @@
     -fx-cursor: hand;
 }
 
+.btn:disabled {
+    -fx-opacity: 0.55;
+    -fx-cursor: default;
+}
+
 .btn-salvar { -fx-background-color: #10B981; }
 .btn-salvar:hover { -fx-background-color: #059669; }
 
