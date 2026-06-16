@@ -12,81 +12,128 @@
             stylesheets="@style.css">
 
         <top>
-                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header-bar">
-                        <padding>
-                                <Insets top="15" right="25" bottom="15" left="25"/>
-                        </padding>
-                        <Label text="CRUD Países" styleClass="header-title"/>
-                </HBox>
+                <VBox>
+                        <MenuBar>
+                                <menus>
+                                        <Menu text="Arquivo">
+                                                <items>
+                                                        <MenuItem text="Exportar Dados"/>
+                                                        <MenuItem text="Sair"/>
+                                                </items>
+                                        </Menu>
+                                        <Menu text="Visualizar">
+                                                <items>
+                                                        <MenuItem text="Modo Escuro"/>
+                                                </items>
+                                        </Menu>
+                                        <Menu text="Ajuda">
+                                                <items>
+                                                        <MenuItem text="Documentação"/>
+                                                </items>
+                                        </Menu>
+                                </menus>
+                        </MenuBar>
+                        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-bar">
+                                <padding>
+                                        <Insets top="20" right="35" bottom="20" left="35"/>
+                                </padding>
+                                <Label text="🌐" styleClass="header-icon"/>
+                                <VBox spacing="2">
+                                        <Label text="GlobalBase Geopolítica" styleClass="header-title"/>
+                                        <Label text="Módulo de Gestão de Países e Indicadores Econômicos" styleClass="header-subtitle"/>
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="lblContador" text="0 registros" styleClass="header-badge"/>
+                        </HBox>
+                </VBox>
         </top>
 
         <center>
-                <HBox spacing="25">
+                <HBox spacing="30">
                         <padding>
-                                <Insets top="25" right="25" bottom="25" left="25"/>
+                                <Insets top="30" right="35" bottom="30" left="35"/>
                         </padding>
 
-                        <VBox spacing="20" prefWidth="380" styleClass="card">
+                        <VBox spacing="25" prefWidth="440" styleClass="card">
+                                <VBox spacing="5">
+                                        <Label text="Formulário de Registro" styleClass="titulo-card"/>
+                                        <Label text="Preencha os dados abaixo. Campos com * são obrigatórios." styleClass="subtitulo-card"/>
+                                </VBox>
 
-                                <Label text="Detalhes do País" styleClass="titulo-card"/>
+                                <VBox spacing="16" VBox.vgrow="ALWAYS">
+                                        <VBox spacing="8">
+                                                <Label text="Nome Oficial *" styleClass="form-label, label-mandatory"/>
+                                                <TextField fx:id="txtNome" promptText="Ex: República Federativa do Brasil"/>
+                                        </VBox>
 
-                                <GridPane hgap="15" vgap="15">
-                                        <columnConstraints>
-                                                <ColumnConstraints halignment="RIGHT" minWidth="90"/>
-                                                <ColumnConstraints hgrow="ALWAYS"/>
-                                        </columnConstraints>
-
-                                        <Label text="Nome:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
-                                        <TextField fx:id="txtNome" GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Ex: Brasil"/>
-
-                                        <Label text="Sigla:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
-                                        <TextField fx:id="txtSigla" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Ex: BR"/>
-
-                                        <Label text="Capital:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
-                                        <TextField fx:id="txtCapital" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Ex: Brasília"/>
-
-                                        <Label text="Área (km²):" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
-                                        <TextField fx:id="txtArea" GridPane.rowIndex="3" GridPane.columnIndex="1" promptText="Ex: 8515767"/>
-
-                                        <Label text="PIB (Bilhão):" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="form-label"/>
-                                        <TextField fx:id="txtPib" GridPane.rowIndex="4" GridPane.columnIndex="1" promptText="Ex: 3770.0"/>
-
-                                        <Label text="População:" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="form-label"/>
-                                        <TextField fx:id="txtPopulacao" GridPane.rowIndex="5" GridPane.columnIndex="1" promptText="Ex: 214000000"/>
-
-                                        <Label text="Poder Militar:" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="form-label"/>
-                                        <TextField fx:id="txtMilitar" GridPane.rowIndex="6" GridPane.columnIndex="1" promptText="Ex: 0.2151"/>
-                                </GridPane>
-
-                                <Region VBox.vgrow="ALWAYS"/>
-                                <VBox spacing="10">
-                                        <HBox spacing="10">
-                                                <Button text="Salvar" onAction="#salvar" styleClass="btn, btn-salvar" HBox.hgrow="ALWAYS" minWidth="150" maxWidth="150"/>
-                                                <Button fx:id="btnAtualizar" text="Atualizar" onAction="#atualizar" styleClass="btn, btn-atualizar" HBox.hgrow="ALWAYS" minWidth="150" maxWidth="150"/>
+                                        <HBox spacing="15">
+                                                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                                        <Label text="Sigla (ISO 3166) *" styleClass="form-label, label-mandatory"/>
+                                                        <TextField fx:id="txtSigla" promptText="Ex: BRA"/>
+                                                </VBox>
+                                                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                                        <Label text="Capital" styleClass="form-label"/>
+                                                        <TextField fx:id="txtCapital" promptText="Ex: Brasília"/>
+                                                </VBox>
                                         </HBox>
-                                        <HBox spacing="10">
-                                                <Button fx:id="btnExcluir" text="Excluir" onAction="#excluir" styleClass="btn, btn-excluir" HBox.hgrow="ALWAYS" minWidth="150" maxWidth="150"/>
-                                                <Button text="Limpar" onAction="#limpar" styleClass="btn, btn-limpar" HBox.hgrow="ALWAYS" minWidth="150" maxWidth="150"/>
+
+                                        <HBox spacing="15">
+                                                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                                        <Label text="Área Territorial (km²)" styleClass="form-label"/>
+                                                        <TextField fx:id="txtArea" promptText="Ex: 8515767.0"/>
+                                                </VBox>
+                                                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                                        <Label text="População Total" styleClass="form-label"/>
+                                                        <TextField fx:id="txtPopulacao" promptText="Ex: 214300000"/>
+                                                </VBox>
+                                        </HBox>
+
+                                        <HBox spacing="15">
+                                                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                                        <Label text="PIB (Bilhão PPC)" styleClass="form-label"/>
+                                                        <TextField fx:id="txtPib" promptText="Ex: 3770.5"/>
+                                                </VBox>
+                                                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                                        <Label text="Poder Militar (GFP)" styleClass="form-label"/>
+                                                        <TextField fx:id="txtMilitar" promptText="Ex: 0.2151"/>
+                                                </VBox>
                                         </HBox>
                                 </VBox>
+
+                                <Label fx:id="lblMensagem" wrapText="true" alignment="CENTER" maxWidth="Infinity" styleClass="lbl-mensagem"/>
+
+                                <GridPane hgap="12" vgap="12">
+                                        <columnConstraints>
+                                                <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+                                                <ColumnConstraints percentWidth="50" hgrow="ALWAYS"/>
+                                        </columnConstraints>
+
+                                        <Button fx:id="btnSalvar" text="✓ Salvar" onAction="#salvar" styleClass="btn, btn-salvar" maxWidth="Infinity" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                        <Button fx:id="btnAtualizar" text="⟳ Atualizar" onAction="#atualizar" styleClass="btn, btn-atualizar" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                        <Button fx:id="btnExcluir" text="✕ Excluir" onAction="#excluir" styleClass="btn, btn-excluir" maxWidth="Infinity" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                        <Button fx:id="btnLimpar" text="⌫ Limpar" onAction="#limpar" styleClass="btn, btn-limpar" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                </GridPane>
                         </VBox>
 
-                        <VBox spacing="15" HBox.hgrow="ALWAYS" styleClass="card">
-                                <Label text="Registos Existentes" styleClass="titulo-card"/>
+                        <VBox spacing="20" HBox.hgrow="ALWAYS" styleClass="card">
+                                <HBox alignment="BOTTOM_LEFT" spacing="20">
+                                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                                                <Label text="Base de Dados" styleClass="titulo-card"/>
+                                                <Label text="Selecione um item na tabela para visualizar, editar ou remover." styleClass="subtitulo-card"/>
+                                        </VBox>
+                                        <TextField fx:id="txtPesquisa" promptText="🔍 Filtrar por país, sigla ou capital..." prefWidth="300" styleClass="search-field"/>
+                                </HBox>
 
                                 <TableView fx:id="tablePaises" VBox.vgrow="ALWAYS" onMouseClicked="#selecionarPais">
-                                        <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                                        </columnResizePolicy>
                                         <columns>
-                                                <TableColumn fx:id="colId" text="ID" maxWidth="40"/>
-                                                <TableColumn fx:id="colNome" text="País" minWidth="120"/>
-                                                <TableColumn fx:id="colSigla" text="Sigla" maxWidth="60"/>
-                                                <TableColumn fx:id="colCapital" text="Capital" minWidth="120"/>
-                                                <TableColumn fx:id="colArea" text="Área" minWidth="120" style="-fx-alignment: CENTER-RIGHT;"/>
-                                                <TableColumn fx:id="colPib" text="PIB (PPC)" minWidth="130" style="-fx-alignment: CENTER-RIGHT; -fx-font-weight: bold;"/>
-                                                <TableColumn fx:id="colPopulacao" text="População" minWidth="100" style="-fx-alignment: CENTER-RIGHT;"/>
-                                                <TableColumn fx:id="colMilitar" text="Índice Militar" minWidth="100" style="-fx-alignment: CENTER;"/>
+                                                <TableColumn fx:id="colId" text="ID" prefWidth="60" style="-fx-alignment: CENTER;"/>
+                                                <TableColumn fx:id="colNome" text="País" prefWidth="220"/>
+                                                <TableColumn fx:id="colSigla" text="Sigla" prefWidth="80" style="-fx-alignment: CENTER;"/>
+                                                <TableColumn fx:id="colCapital" text="Capital" prefWidth="180"/>
+                                                <TableColumn fx:id="colArea" text="Área" prefWidth="150" style="-fx-alignment: CENTER-RIGHT;"/>
+                                                <TableColumn fx:id="colPib" text="PIB (PPC)" prefWidth="160" style="-fx-alignment: CENTER-RIGHT; -fx-font-weight: bold;"/>
+                                                <TableColumn fx:id="colPopulacao" text="População" prefWidth="140" style="-fx-alignment: CENTER-RIGHT;"/>
+                                                <TableColumn fx:id="colMilitar" text="Índice Militar" prefWidth="130" style="-fx-alignment: CENTER;"/>
                                         </columns>
                                 </TableView>
                         </VBox>
