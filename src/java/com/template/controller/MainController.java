@@ -1,5 +1,8 @@
-package com.template;
+package com.template.controller;
 
+import com.template.model.dao.PaisDAO;
+import com.template.model.dto.PaisDTO;
+import com.template.util.DialogUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -9,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -79,7 +81,9 @@ public class MainController implements Initializable {
     public void atualizar() {
         if (idSelecionado == null) return;
 
-        if (confirmarAcao("Confirmação de Edição", "Deseja salvar as alterações neste registro?")) {
+        if (DialogUtils.confirmarAcao(
+                "Confirmação de Edição",
+                "Deseja salvar as alterações neste registro?")) {
             try {
                 PaisDTO pais = extrairDadosFormulario();
                 pais.setId(idSelecionado);
@@ -96,8 +100,9 @@ public class MainController implements Initializable {
     public void excluir() {
         if (idSelecionado == null) return;
 
-        if (confirmarAcao("Aviso de Exclusão", "Esta ação é permanente. Deseja remover este registro?")) {
-            try {
+        if (DialogUtils.confirmarAcao(
+                "Aviso de Exclusão",
+                "Esta ação é permanente. Deseja remover este registro?")) {            try {
                 paisDAO.excluir(idSelecionado);
                 exibirMensagem("Registro removido com sucesso!", true);
                 atualizarTela();
@@ -218,12 +223,4 @@ public class MainController implements Initializable {
         lblMensagem.getStyleClass().add(sucesso ? "lbl-sucesso" : "lbl-erro");
     }
 
-    private boolean confirmarAcao(String titulo, String cabecalho) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(titulo);
-        alert.setHeaderText(cabecalho);
-        alert.setContentText("Escolha OK para prosseguir ou Cancelar para abortar.");
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get() == ButtonType.OK;
-    }
 }

@@ -1,4 +1,4 @@
-package com.template;
+package com.template.model.dto;
 
 import java.text.NumberFormat;
 import java.util.Locale;
