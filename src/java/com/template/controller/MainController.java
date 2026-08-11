@@ -3,6 +3,7 @@ package com.template.controller;
 import com.template.model.dao.PaisDAO;
 import com.template.model.dto.PaisDTO;
 import com.template.util.DialogUtils;
+import com.template.validator.PaisValidator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -46,6 +47,7 @@ public class MainController implements Initializable {
     private final ObservableList<PaisDTO> lista = FXCollections.observableArrayList();
     private FilteredList<PaisDTO> dadosFiltrados;
     private final PaisDAO paisDAO = new PaisDAO();
+    private final PaisValidator paisValidator = new PaisValidator();
     private Long idSelecionado = null;
 
     @Override
@@ -164,9 +166,7 @@ public class MainController implements Initializable {
     }
 
     private PaisDTO extrairDadosFormulario() {
-        if (txtNome.getText().isBlank() || txtSigla.getText().isBlank()) {
-            throw new IllegalArgumentException("Preencha todos os campos obrigatórios (*).");
-        }
+        paisValidator.validarCampos(txtNome.getText(), txtSigla.getText());
 
         PaisDTO p = new PaisDTO();
         p.setNome(txtNome.getText().trim());
