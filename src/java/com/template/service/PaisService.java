@@ -28,12 +28,12 @@ public class PaisService {
     }
 
     public void salvar(PaisDTO pais) {
-        validador.validarPais(pais.getNome(), pais.getSigla());
+        validador.validarPais(pais);
         paisDAO.salvar(pais);
     }
 
     public void atualizar(PaisDTO pais) {
-        validador.validarPais(pais.getNome(), pais.getSigla());
+        validador.validarPais(pais);
         paisDAO.atualizar(pais);
     }
 
@@ -42,7 +42,7 @@ public class PaisService {
     }
 
     public PaisDTO criarPaisDoFormulario(String nome, String sigla, String capital, String area,
-                                          String pib, String populacao, String militar) {
+                                         String pib, String populacao, String militar) {
         PaisDTO p = new PaisDTO();
         p.setNome(nome != null ? nome.trim() : "");
         p.setSigla(sigla != null ? sigla.trim() : "");

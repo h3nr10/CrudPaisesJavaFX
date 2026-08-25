@@ -17,6 +17,9 @@ public class Main {
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setTitle("CRUD Países");
+            stage.setMinWidth(1180);
+            stage.setMinHeight(680);
+            stage.setMaximized(true);
             stage.show();
         }
     }

@@ -58,6 +58,7 @@ public class MainController implements Initializable {
         colPib.setCellValueFactory(new PropertyValueFactory<>("pibFormatado"));
         colPopulacao.setCellValueFactory(new PropertyValueFactory<>("populacaoFormatada"));
         colMilitar.setCellValueFactory(new PropertyValueFactory<>("militarFormatado"));
+        tablePaises.setPlaceholder(new Label("Nenhum país cadastrado ainda."));
 
         configurarFiltrosNumericos();
         configurarPesquisa();
@@ -216,6 +217,8 @@ public class MainController implements Initializable {
     private void exibirMensagem(String mensagem, boolean sucesso) {
         lblMensagem.setText(mensagem);
         lblMensagem.setTooltip(new Tooltip(mensagem));
+        lblMensagem.setVisible(true);
+        lblMensagem.setManaged(true);
         lblMensagem.getStyleClass().removeAll("lbl-sucesso", "lbl-erro");
         lblMensagem.getStyleClass().add(sucesso ? "lbl-sucesso" : "lbl-erro");
     }
