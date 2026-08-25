@@ -14,7 +14,7 @@ public class Conexao {
         try {
             return DriverManager.getConnection(URL, USUARIO, SENHA);
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao conectar: " + e.getMessage());
+            throw new RuntimeException("Erro ao conectar (" + e.getSQLState() + "): " + e.getMessage(), e);
         }
     }
 }

@@ -1,9 +1,8 @@
 package com.template.controller;
 
-import com.template.model.dao.PaisDAO;
 import com.template.model.dto.PaisDTO;
+import com.template.service.PaisService;
 import com.template.util.DialogUtils;
-import com.template.validator.PaisValidator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -46,8 +45,7 @@ public class MainController implements Initializable {
 
     private final ObservableList<PaisDTO> lista = FXCollections.observableArrayList();
     private FilteredList<PaisDTO> dadosFiltrados;
-    private final PaisDAO paisDAO = new PaisDAO();
-    private final PaisValidator paisValidator = new PaisValidator();
+    private final PaisService paisService = new PaisService();
     private Long idSelecionado = null;
 
     @Override
@@ -71,7 +69,7 @@ public class MainController implements Initializable {
     @FXML
     public void salvar() {
         try {
-            paisDAO.salvar(extrairDadosFormulario());
+            paisService.salvar(extrairDadosFormulario());
             exibirMensagem("Registro salvo com sucesso!", true);
             atualizarTela();
         } catch (Exception e) {
@@ -89,7 +87,7 @@ public class MainController implements Initializable {
             try {
                 PaisDTO pais = extrairDadosFormulario();
                 pais.setId(idSelecionado);
-                paisDAO.atualizar(pais);
+                paisService.atualizar(pais);
                 exibirMensagem("Registro atualizado com sucesso!", true);
                 atualizarTela();
             } catch (Exception e) {
@@ -105,21 +103,22 @@ public class MainController implements Initializable {
         if (DialogUtils.confirmarAcao(
                 "Aviso de Exclusão",
                 "Esta ação é permanente. Deseja remover este registro?")) {            try {
-                paisDAO.excluir(idSelecionado);
-                exibirMensagem("Registro removido com sucesso!", true);
-                atualizarTela();
-            } catch (Exception e) {
-                exibirMensagem(e.getMessage(), false);
-            }
+            paisService.excluir(idSelecionado);
+            exibirMensagem("Registro removido com sucesso!", true);
+            atualizarTela();
+        } catch (Exception e) {
+            exibirMensagem(e.getMessage(), false);
+        }
         }
     }
 
     public void listar() {
         try {
-            lista.setAll(paisDAO.listar());
+            lista.setAll(paisService.listar());
             lblContador.setText(lista.size() + " registros no banco");
         } catch (Exception e) {
-            exibirMensagem("Falha ao carregar banco de dados.", false);
+            exibirMensagem("Falha ao carregar banco de dados: " + e.getMessage(), false);
+            e.printStackTrace();
         }
     }
 
@@ -166,18 +165,15 @@ public class MainController implements Initializable {
     }
 
     private PaisDTO extrairDadosFormulario() {
-        paisValidator.validarCampos(txtNome.getText(), txtSigla.getText());
-
-        PaisDTO p = new PaisDTO();
-        p.setNome(txtNome.getText().trim());
-        p.setSigla(txtSigla.getText().trim());
-        p.setCapital(txtCapital.getText().trim());
-        p.setArea(txtArea.getText().isBlank() ? 0.0 : Double.parseDouble(txtArea.getText().trim()));
-        p.setPib(txtPib.getText().isBlank() ? 0.0 : Double.parseDouble(txtPib.getText().trim()));
-        p.setPopulacao(txtPopulacao.getText().isBlank() ? 0 : Integer.parseInt(txtPopulacao.getText().trim()));
-        p.setMilitar(txtMilitar.getText().isBlank() ? 0.0 : Double.parseDouble(txtMilitar.getText().trim()));
-
-        return p;
+        return paisService.criarPaisDoFormulario(
+                txtNome.getText(),
+                txtSigla.getText(),
+                txtCapital.getText(),
+                txtArea.getText(),
+                txtPib.getText(),
+                txtPopulacao.getText(),
+                txtMilitar.getText()
+        );
     }
 
     private void configurarFiltrosNumericos() {
@@ -219,6 +215,7 @@ public class MainController implements Initializable {
 
     private void exibirMensagem(String mensagem, boolean sucesso) {
         lblMensagem.setText(mensagem);
+        lblMensagem.setTooltip(new Tooltip(mensagem));
         lblMensagem.getStyleClass().removeAll("lbl-sucesso", "lbl-erro");
         lblMensagem.getStyleClass().add(sucesso ? "lbl-sucesso" : "lbl-erro");
     }
